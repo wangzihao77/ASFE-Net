@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="root@region-41.seetacloud.com:56073 password (2)" remoteFilesAllowedToDisappearOnAutoupload="false">
+    <serverData>
+      <paths name="cxj@10.83.196.79:22 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_354" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="cxj@10.83.196.79:22 password (2)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/cxj/桌面/randla-net-tf2-update" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="cxj@10.83.196.79:22 password (3)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/cxj/桌面/randla-net-tf2-update" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@region-41.seetacloud.com:56073 password">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_868" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="root@region-41.seetacloud.com:56073 password (2)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_630" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>
