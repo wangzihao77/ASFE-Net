@@ -1,13 +1,7 @@
-
-fork from: https://github.com/QingyongHu/RandLA-Net.git
-作者：https://zhuanlan.zhihu.com/p/105433460
-
-
-
 ## 1 install
 ```
 Python 3.6, Tensorflow 2.6, CUDA 11.4 and cudnn ( /usr/local/cuda-11.4 没有用 conda 的cudatoolkit)
-git clone --depth=1 https://github.com/luckyluckydadada/randla-net-tf2.git
+git clone --depth=1 https://github.com/wangzihao77/ASFE-Net.git
 conda create -n randlanet python=3.6 
 conda activate randlanet
 pip install tensorflow-gpu==2.6 -i https://pypi.tuna.tsinghua.edu.cn/simple  --timeout=120
@@ -66,10 +60,6 @@ python -B main_S3DIS.py --gpu 0 --mode test --test_area 5
 python -B main_S3DIS.py --gpu 0 --mode train --test_area 6
 python -B main_S3DIS.py --gpu 0 --mode test --test_area 6
 
-```
-
-论文里说，RandLA-Net是一个完全端到端的网络架构，能够将整个点云作为输入，而不用拆分、合并等预处理、后处理操作。但是我在阅读代码的时候，发现网络在获取数据的部分，采用的是和KPConv类似的思路：先随机选择一个train文件，在文件中随机选择一批中心点，然后在这些中心点周围用KNN的方法选择K个点，作为一个batch训练所需的点云。我看代码里确实是这样做的，感觉和论文里说的有点出入，不知道是不是我理解的有问题。
-对于 Semantic 3D 数据集，代码里先对原始点云进行 grid_size=0.01 的采样，得到点云1，然后对点云1进行 grid_size=0.06 的采样，得到点云2，最后对点云2进行学习。而最后test的时候，网络只把特征传播到点云1，意思就是语义分割的结果只预测到了点云1，并没有预测原始点云的分割结果，所以就对这里产生了一些疑问。S3DIS就没有这个问题，最后预测的是原始点云的语义分割结果。
 
 ## 5 vis
 label
@@ -79,9 +69,9 @@ python vis_S3DIS.py
 
 ## 6 code
 helper_tf_util.py	封装了一些卷积池化操作代码
-helper_tool.py	  有训练时各个数据集所用到的一些参数信息，还有一些预处理数据时的一些模块。
+helper_tool.py	      有训练时各个数据集所用到的一些参数信息，还有一些预处理数据时的一些模块。
 main_*.py	        训练对应数据的主文件
-RandLANet.py	    定义网络的主题结构
+ASFE-Net.py	       定义网络的主题结构
 tester_*.py	      测试对应数据的文件，该文件在main_*.py中被调用
 utils	            对数据集预处理的模块以及KNN模块。
 utils/data_prare_*.py 预处理，把point和label做了grid sampling，并且生成了一个kdtree保存下来
@@ -150,16 +140,6 @@ sh jobs_6_fold_cv_s3dis.sh
 python utils/6_fold_cv.py
 ```
 
-Quantitative results of different approaches on S3DIS dataset (6-fold cross-validation):
-
-![a](http://randla-net.cs.ox.ac.uk/imgs/S3DIS_table.png)
-
-Qualitative results of our RandLA-Net:
-
-| ![2](imgs/S3DIS_area2.gif)   | ![z](imgs/S3DIS_area3.gif) |
-| ------------------------------ | ---------------------------- |
-
-
 
 ### (3) Semantic3D
 7zip is required to uncompress the raw data in this dataset, to install p7zip:
@@ -182,17 +162,6 @@ python main_Semantic3D.py --mode train --gpu 0
 ```
 python main_Semantic3D.py --mode test --gpu 0
 ```
-Quantitative results of different approaches on Semantic3D (reduced-8):
-
-![a](http://randla-net.cs.ox.ac.uk/imgs/Semantic3D_table.png)
-
-Qualitative results of our RandLA-Net:
-
-| ![z](imgs/Semantic3D-1.gif)    | ![z](http://randla-net.cs.ox.ac.uk/imgs/Semantic3D-2.gif)   |
-| -------------------------------- | ------------------------------- |
-| ![z](imgs/Semantic3D-3.gif)    | ![z](imgs/Semantic3D-4.gif)   |
-
-
 
 **Note:** 
 - Preferably with more than 64G RAM to process this dataset due to the large volume of point cloud
@@ -228,44 +197,8 @@ Qualitative results of our RandLA-Net:
 ![zzz](imgs/SemanticKITTI-2.gif)    
 
 
-### (5) Demo
-
-<p align="center"> <a href="https://youtu.be/Ar3eY_lwzMk"><img src="http://randla-net.cs.ox.ac.uk/imgs/demo_cover.png" width="80%"></a> </p>
 
 
-### Citation
-If you find our work useful in your research, please consider citing:
-
-	@article{hu2019randla,
-	  title={RandLA-Net: Efficient Semantic Segmentation of Large-Scale Point Clouds},
-	  author={Hu, Qingyong and Yang, Bo and Xie, Linhai and Rosa, Stefano and Guo, Yulan and Wang, Zhihua and Trigoni, Niki and Markham, Andrew},
-	  journal={Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition},
-	  year={2020}
-	}
-	
-	@article{hu2021learning,
-	  title={Learning Semantic Segmentation of Large-Scale Point Clouds with Random Sampling},
-	  author={Hu, Qingyong and Yang, Bo and Xie, Linhai and Rosa, Stefano and Guo, Yulan and Wang, Zhihua and Trigoni, Niki and Markham, Andrew},
-	  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence},
-	  year={2021},
-	  publisher={IEEE}
-	}
-
-
-### Acknowledgment
--  Part of our code refers to <a href="https://github.com/jlblancoc/nanoflann">nanoflann</a> library and the the recent work <a href="https://github.com/HuguesTHOMAS/KPConv">KPConv</a>.
--  We use <a href="https://www.blender.org/">blender</a> to make the video demo.
-
-
-### License
-Licensed under the CC BY-NC-SA 4.0 license, see [LICENSE](./LICENSE).
-
-
-### Updates
-* 21/03/2020: Updating all experimental results
-* 21/03/2020: Adding pretrained models and results
-* 02/03/2020: Code available!
-* 15/11/2019: Initial release！
 
 ## Related Repos
 1. [SoTA-Point-Cloud: Deep Learning for 3D Point Clouds: A Survey](https://github.com/QingyongHu/SoTA-Point-Cloud) ![GitHub stars](https://img.shields.io/github/stars/QingyongHu/SoTA-Point-Cloud.svg?style=flat&label=Star)
